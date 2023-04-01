@@ -19,7 +19,7 @@ services:
     volumes:
       - ./php56:/var/www/html/
 
-  db:
+  mysql:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
@@ -27,6 +27,17 @@ services:
       - ./volumes/mysql:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password #example of a password
+
+  mongodb:
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./volumes/mongo:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
 
   phpmyadmin:
     image: phpmyadmin
