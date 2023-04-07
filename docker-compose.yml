@@ -52,5 +52,7 @@ services:
   phpmyadmin:
     image: phpmyadmin
     restart: always
+    links:
+      - mysql:db
     ports:
       - 8080:80
