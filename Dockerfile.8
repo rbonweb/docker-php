@@ -8,4 +8,18 @@ RUN apt-get update && apt-get install -y \
     libzip-dev
 RUN docker-php-ext-install gd
 RUN docker-php-ext-install zip
+
+# Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Install Freetype 
+RUN apt-get -y update && \
+    apt-get --no-install-recommends install -y libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev && \
+    rm -rf /var/lib/apt/lists/* && \
+    docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg && \
+    docker-php-ext-install gd
+
+# Cleanup
+RUN rm -rf /usr/src/*
