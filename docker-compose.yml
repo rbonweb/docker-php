@@ -2,32 +2,31 @@ version: '3.8'
 
 services:
 
-  php56:
-    build:
-      context: .
-      dockerfile: Dockerfile.56
-    ports:
-      - 81:80
-    volumes:
-      - ./php56:/var/www/html/
-
-  php72:
-    build:
-      context: .
-      dockerfile: Dockerfile.72
-    ports:
-      - 82:80
-    volumes:
-      - ./php72:/var/www/html/
-
   php74:
     build:
       context: .
       dockerfile: Dockerfile.74
+    restart: always
     ports:
-      - 83:80
+      - 80:80
     volumes:
       - ./php74:/var/www/html/
+      - ./config/php/php.ini:/usr/local/etc/php/php.ini
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  php8:
+    build:
+      context: .
+      dockerfile: Dockerfile.8
+    restart: always
+    ports:
+      - 81:80
+    volumes:
+      - ./php8:/var/www/html/
+      - ./config/php/php.ini:/usr/local/etc/php/php.ini
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   mysql:
     image: mysql
@@ -56,3 +55,6 @@ services:
       - mysql:db
     ports:
       - 8080:80
+    environment:
+      UPLOAD_LIMIT: 512M
+      MEMORY_LIMIT: 512M
